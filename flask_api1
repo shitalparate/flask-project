@@ -1,0 +1,40 @@
+from flask import Flask,request,jsonify,redirect,url_for
+
+app=Flask(__name__)
+
+@app.route("/")
+def home():
+    return "HOME"
+
+@app.route("/admin")
+def admin():
+    return redirect(url_for("home"))
+
+
+@app.route('/get_user/<user_id>')
+def get_user(user_id):
+    user_data={
+        "user_id":user_id,
+        "Name":"John Doe",
+        "email_id": "john.doe@example.com"
+    }
+    extra=request.args.get("extra")
+
+    if extra:
+        user_data["extra"]=extra
+
+    return jsonify(user_data)
+
+
+@app.route('/create_user',methods=['POST'])
+def create_user():
+    data=request.get_json()
+
+
+    return jsonify(data)
+
+
+
+if __name__=="__main__":
+    app.run(debug=True)
+
